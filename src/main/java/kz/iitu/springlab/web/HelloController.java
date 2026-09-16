@@ -5,6 +5,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.ZoneOffset;
 import java.util.Map;
 
 @RestController
@@ -34,5 +37,27 @@ public class HelloController {
                 "group", "2414",
                 "timestamp", LocalDateTime.now().toString()
         );
+    }
+
+    // ✅ Individual Assignment (Variant 11)
+    @GetMapping("/api/time")
+    public Map<String, Object> getTime(@RequestParam(required = false) String zone) {
+        if (zone == null || zone.isBlank()) {
+            return Map.of("error", "Parameter 'zone' is required");
+        }
+
+        try {
+            ZoneId zoneId = ZoneId.of(zone);
+            ZonedDateTime now = ZonedDateTime.now(zoneId);
+            ZoneOffset offset = now.getOffset();
+
+            return Map.of(
+                    "zone", zone,
+                    "currentTime", now.toString(),
+                    "utcOffset", offset.toString()
+            );
+        } catch (Exception e) {
+            return Map.of("error", "Invalid time zone: " + zone);
+        }
     }
 }
