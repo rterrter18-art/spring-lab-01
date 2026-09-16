@@ -1,38 +1,72 @@
-package kz.iitu.springlab;
+package kz.iitu.springlab.web;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import kz.iitu.springlab.notify.NotificationService;
+import kz.iitu.springlab.lifecycle.LifecycleDemo;
+import kz.iitu.springlab.scope.TicketOffice;
+import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.ZoneOffset;
 import java.util.Map;
+import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 public class HelloController {
+    private final NotificationService notifications;
+    private final LifecycleDemo lifecycle;
+    private final TicketOffice ticketOffice;
 
-    @GetMapping("/")
-    public String home() {
-        return "Hello, Spring Boot!";
+    public HelloController(NotificationService notifications,
+                           LifecycleDemo lifecycle,
+                           TicketOffice ticketOffice) {
+        this.notifications = notifications;
+        this.lifecycle = lifecycle;
+        this.ticketOffice = ticketOffice;
     }
 
-    @GetMapping("/api/hello")
-    public Map<String, String> hello(
-            @RequestParam(defaultValue = "Guest") String name) {
-
+    @GetMapping("/hello")
+    public Map<String, String> hello(@RequestParam(defaultValue = "Guest") String name) {
         return Map.of(
                 "message", "Hello, " + name + "!",
                 "owner", "Мұратов Мейрамбек Серикович, 2414"
         );
     }
 
-    @GetMapping("/api/info")
-    public Map<String, Object> info() {
-
+    @GetMapping("/lab2/notify")
+    public Map<String, Object> notify(@RequestParam(defaultValue = "Hello") String text) {
         return Map.of(
-                "application", "Spring Lab 01",
-                "student", "Мұратов Мейрамбек Серикович",
-                "group", "2414",
-                "timestamp", LocalDateTime.now().toString()
+                "primary", notifications.viaPrimary(text),
+                "console", notifications.viaConsole(text),
+                "all", notifications.viaAll(text),
+                "beanNames", notifications.names()
+        );
+    }
+
+    @GetMapping("/lab2/lifecycle")
+    public List<String> lifecycle() {
+        return lifecycle.events();
+    }
+
+    @GetMapping("/lab2/scopes")
+    public Map<String, Object> scopes() {
+        return ticketOffice.demo();
+    }
+
+    // 🔹 Жеке тапсырма (Variant 11)
+    @GetMapping("/lab2/custom")
+    public Map<String, Object> custom(@RequestParam(defaultValue = "Test") String text,
+                                      @RequestParam(defaultValue = "titlecase") String qualifier) {
+        if (!notifications.names().contains(qualifier)) {
+            return Map.of("error", "No such notifier: " + qualifier);
+        }
+        return Map.of(
+                "qualifier", qualifier,
+                "result", notifications.viaAll(text).stream()
+                        .filter(s -> s.startsWith(qualifier))
+                        .findFirst()
+                        .orElse("No match")
         );
     }
 }
