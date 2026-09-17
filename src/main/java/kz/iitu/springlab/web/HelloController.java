@@ -30,7 +30,7 @@ public class HelloController {
     public Map<String, String> hello(@RequestParam(defaultValue = "Guest") String name) {
         return Map.of(
                 "message", "Hello, " + name + "!",
-                "owner", "Мұратов Мейрамбек Серикович, 2414"
+                "owner", "Кереев Асылхан Бахтиярович, 2401"
         );
     }
 
