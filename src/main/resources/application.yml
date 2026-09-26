@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: spring-lab
+
+server:
+  port: 8080
+
+app:
+  owner: Muratov Meirambek
+  group: IS-2414
+
+  mail:
+    from: no-reply@iitu.kz
+    retry-count: 3
+    timeout: 5s
+    enabled: true
+
+  notification:
+    channels:
+      email: enabled
+      sms: disabled
+    quiet-hours: "22:00-08:00"
+
+logging:
+  level:
+    kz.iitu: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,env,configprops
+  endpoint:
+    env:
+      show-values: always
+    configprops:
+      show-values: always

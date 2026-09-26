@@ -1,0 +1,17 @@
+server:
+  port: 8081
+
+app:
+  mail:
+    enabled: false
+    retry-count: 1
+
+  notification:
+    channels:
+      email: disabled
+      sms: enabled
+    quiet-hours: "23:00-07:00"
+
+logging:
+  level:
+    kz.iitu: DEBUG
