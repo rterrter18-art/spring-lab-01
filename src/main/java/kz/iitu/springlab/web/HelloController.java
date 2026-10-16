@@ -10,7 +10,7 @@ import java.util.Map;
 @RestController
 public class HelloController {
 
-    @GetMapping("/")
+    @GetMapping("/hello")
     public String home() {
         return "Hello, Spring Boot!";
     }

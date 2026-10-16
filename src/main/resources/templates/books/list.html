@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title}">Book Catalogue</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="container">
+    <h1 th:text="${title}">Book Catalogue</h1>
+
+    <p>
+        Muratov Meirambek | IS-2414 | Laboratory work 5
+    </p>
+
+    <p th:if="${message}"
+       class="flash"
+       th:text="${message}"></p>
+
+    <h2>Filter by author</h2>
+
+    <form method="get" th:action="@{/books}" class="filter-form">
+        <input type="text"
+               name="author"
+               placeholder="Author name"
+               th:value="${author}">
+        <button type="submit">Filter</button>
+        <a th:href="@{/books}">Show all</a>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Year</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.id}">1</td>
+            <td th:text="${book.title}">Title</td>
+            <td th:text="${book.author}">Author</td>
+            <td th:text="${book.year}">2020</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>Add a book</h2>
+
+    <form method="post" th:action="@{/books}" class="add-form">
+        <label for="title">Title</label>
+        <input id="title" type="text" name="title" required>
+
+        <label for="author">Author</label>
+        <input id="author" type="text" name="author" required>
+
+        <label for="year">Year</label>
+        <input id="year" type="number" name="year" required>
+
+        <button type="submit">Add book</button>
+    </form>
+
+    <p><a th:href="@{/}">Home</a></p>
+</main>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Book not found</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="container">
+    <h1>Book not found</h1>
+    <p>Muratov Meirambek | IS-2414 | Variant 10</p>
+
+    <p>
+        No book exists with ID
+        <strong th:text="${id}">999</strong>.
+    </p>
+
+    <p><a th:href="@{/books}">Back to catalogue</a></p>
+</main>
+</body>
+</html>
